@@ -1,20 +1,56 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# GIMT National Technology Day • Digital Identity Pass Generator
 
-# Run and deploy your AI Studio app
+A modern, high-tech web application developed for **Global Institute of Management & Technology (GIMT)** to celebrate **National Technology Day**. This tool allows participants to generate and download a unique, futuristic digital identity pass.
 
-This contains everything you need to run your app locally.
+## 🚀 Features
 
-View your app in AI Studio: https://ai.studio/apps/74e05081-b5c8-47a9-8df3-d220c4b3bb93
+- **Futuristic UI/UX**: Cyberpunk-inspired design with smooth animations using `motion`.
+- **Identity Scan**: Integrated holographic camera scan (Webcam) with HUD overlays.
+- **Photo Upload**: Fallback option to upload an existing ID photo.
+- **Sector Authority Selection**: Choose your department (CSE, ECE, ME, etc.) to customize the pass blueprint.
+- **High-Quality Export**: Generate and download passes as high-resolution PNG images using `html2canvas`.
+- **Social Sharing**: Direct transmission links for LinkedIn, Facebook, and Instagram.
+- **Print Optimization**: Dedicated styles for clean physical printing.
 
-## Run Locally
+## 🛠️ Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework**: React 19 (TypeScript)
+- **Styling**: Tailwind CSS 4.0
+- **Animations**: Motion (fka Framer Motion)
+- **Icons**: Lucide React
+- **Capture**: html2canvas
+- **Hardware Integration**: react-webcam
+- **Build Tool**: Vite
 
+## 📦 Installation
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🚀 Deployment (Vercel)
+
+This project is optimized for deployment on **Vercel**.
+
+1. Push your code to a GitHub/GitLab/Bitbucket repository.
+2. Import the project in Vercel.
+3. Vercel will automatically detect the **Vite** configuration.
+4. Settings:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+
+## 📄 License
+
+This project was developed for GIMT CSE Innovation Unit. All rights reserved.
