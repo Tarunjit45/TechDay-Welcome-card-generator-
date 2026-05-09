@@ -1,0 +1,6 @@
+{
+  "name": "TechDay Welcome Card Generator",
+  "description": "A welcome card generator for National Technology Day at Global Institute of Management and Technology. Upload your photo and details to get a personalized tech-themed card.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}
