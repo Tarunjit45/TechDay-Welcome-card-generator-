@@ -41,23 +41,46 @@ export default function App() {
       // Optimization: Scroll to top to ensure no offsets
       window.scrollTo(0, 0);
       
+      // Wait a tiny bit for any pending renders
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       const canvas = await html2canvas(cardRef.current, {
-        scale: 4, // Ultra high-quality for social sharing
+        scale: 2, // 2x is plenty for a 600px card and safer for memory
         backgroundColor: '#050505',
         useCORS: true,
         allowTaint: true,
-        logging: false,
+        logging: true, // Turn on logging to help debug if it still fails
         onclone: (clonedDoc) => {
           const card = clonedDoc.getElementById('welcome-card');
           if (card) {
+            // Remove transforms and ensure card is fully visible
             card.style.transform = 'none';
             card.style.scale = '1';
             card.style.margin = '0';
+            card.style.position = 'relative';
+            
+            // html2canvas doesn't support backdrop-filter/blur well
+            // We replace it with a more solid background in the clone for better compatibility
+            const header = clonedDoc.querySelector('header') || card.querySelector('div[class*="backdrop-blur"]');
+            if (header instanceof HTMLElement) {
+              header.style.backdropFilter = 'none';
+              header.style.backgroundColor = 'rgba(20, 20, 20, 0.95)';
+            }
+
+            // Fix any other potential blur issues
+            const blurs = clonedDoc.querySelectorAll('div[class*="blur"]');
+            blurs.forEach(b => {
+              if (b instanceof HTMLElement) {
+                // Keep the glow but simplify it if it causes issues
+                b.style.filter = 'none';
+                b.style.opacity = '0.05';
+              }
+            });
           }
         }
       });
 
-      const dataUrl = canvas.toDataURL('image/png');
+      const dataUrl = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.download = `GIMT_National_TechDay_Pass_${data.name.replace(/\s+/g, '_') || 'Participant'}.png`;
       link.href = dataUrl;
@@ -65,8 +88,8 @@ export default function App() {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error('Download failed:', err);
-      alert('Failed to generate image. Please try again or take a screenshot.');
+      console.error('Download failed detail:', err);
+      alert('We had trouble generating the image. Please try again or take a screenshot of your pass!');
     }
   };
 
