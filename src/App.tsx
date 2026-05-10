@@ -114,10 +114,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-cyan-500 selection:text-black overflow-x-hidden font-sans">
+    <div className="min-h-screen text-white selection:bg-cyan-500 selection:text-black overflow-x-hidden font-sans relative">
       {/* Background Elements */}
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(#111_1px,transparent_1px)] [background-size:40px_40px] pointer-events-none opacity-50" />
-      <div className="fixed inset-0 -z-10 bg-[linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px)] [background-size:80px_80px] pointer-events-none" />
+      <div className="fixed inset-0 -z-20 bg-[#050505] pointer-events-none" />
+      <div 
+        className="fixed inset-0 -z-10 pointer-events-none opacity-30 bg-cover bg-center bg-no-repeat transition-opacity duration-1000"
+        style={{ backgroundImage: 'url(/tech-bg.png)' }}
+      />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#050505] via-[#050505]/60 to-[#050505] pointer-events-none" />
       <div className="fixed top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent animate-[scan_10s_linear_infinite] pointer-events-none" />
 
       {/* Header */}
@@ -126,7 +130,7 @@ export default function App() {
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                <img 
-                 src="https://www.gimt-india.com/images/logo.png" 
+                 src="/logo.png" 
                  alt="GIMT Logo" 
                  className="w-full h-full object-contain"
                  onError={(e) => {
@@ -134,7 +138,7 @@ export default function App() {
                  }}
                />
              </div>
-             <span className="font-black tracking-tighter text-lg md:text-xl uppercase">GIMT Tech Day</span>
+             <span className="font-black tracking-tighter text-lg md:text-xl uppercase">GIMT • National Tech Day</span>
           </div>
           <div className="hidden md:flex items-center gap-4 bg-zinc-900 border border-zinc-800 px-4 py-1.5 rounded-full">
             <Shield className="w-4 h-4 text-cyan-400" />
@@ -143,7 +147,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="pt-24 pb-12 px-6 flex flex-col items-center min-h-screen">
+      <main className="relative z-10 pt-24 pb-12 px-6 flex flex-col items-center min-h-screen">
         <AnimatePresence mode="wait">
           {step === 'welcome' && (
             <motion.div 
@@ -159,13 +163,23 @@ export default function App() {
                     className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 rounded-full mb-4"
                   >
                    <Sparkles className="w-4 h-4" />
-                   <span className="text-xs font-black uppercase tracking-widest leading-none">Innovation Unleashed 2026</span>
+                   <span className="text-xs font-black uppercase tracking-widest leading-none">National Technology Day • May 11</span>
                  </motion.div>
                  <h1 className="text-6xl md:text-8xl font-[900] tracking-tighter leading-none uppercase filter drop-shadow-[0_0_30px_rgba(6,182,212,0.2)]">
-                   Welcome to <br /> <span className="text-cyan-500">GIMT Technology Day</span>
+                   Welcome to <br /> 
+                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">National Technology Day</span>
                  </h1>
-                 <p className="text-zinc-500 text-lg md:text-xl max-w-[600px] mx-auto font-medium leading-relaxed">
-                   The Computer Science & Engineering Department invites you to generate your unique digital identity for the national celebration.
+                 <div className="space-y-2 mt-6">
+                   <p className="text-xl md:text-2xl font-bold tracking-tight text-white/90 italic">
+                     Global Institute of Management & Technology
+                   </p>
+                   <p className="text-cyan-500 font-black tracking-[0.3em] uppercase text-xs md:text-sm">
+                     Hosted by Department of CSE
+                   </p>
+                 </div>
+                 <p className="text-zinc-500 text-lg md:text-xl max-w-[700px] mx-auto font-medium leading-relaxed mt-8">
+                   Step into the future! We invite you to celebrate Bharat's innovation legacy. 
+                   Generate your exclusive **Digital Identity Pass** and join the technological revolution.
                  </p>
               </div>
 
