@@ -37,27 +37,29 @@ export default function App() {
   const handleDownload = async () => {
     if (!cardRef.current) return;
     
-    // Add a loading class or state if needed, but let's just optimize the capture
     try {
+      // Optimization: Scroll to top to ensure no offsets
+      window.scrollTo(0, 0);
+      
       const canvas = await html2canvas(cardRef.current, {
-        scale: 3, // High-quality output
-        backgroundColor: '#09090b',
+        scale: 4, // Ultra high-quality for social sharing
+        backgroundColor: '#050505',
         useCORS: true,
         allowTaint: true,
         logging: false,
         onclone: (clonedDoc) => {
           const card = clonedDoc.getElementById('welcome-card');
           if (card) {
-            // Reset transforms for the capture clone to avoid cropping/misalignment
             card.style.transform = 'none';
             card.style.scale = '1';
+            card.style.margin = '0';
           }
         }
       });
 
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `GIMT_TechDay_Pass_${data.name.replace(/\s+/g, '_') || 'Participant'}.png`;
+      link.download = `GIMT_National_TechDay_Pass_${data.name.replace(/\s+/g, '_') || 'Participant'}.png`;
       link.href = dataUrl;
       document.body.appendChild(link);
       link.click();
@@ -68,14 +70,38 @@ export default function App() {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const getCaption = () => {
+    const departmentName = data.department === 'CSE' ? 'Computer Science & Engineering' : data.department;
+    return `Excited to participate in the National Technology Day 2026 at Global Institute of Management & Technology! 🚀 
+
+I'm proud to be representing the Department of ${departmentName}. India's technological journey is inspiring, and I'm thrilled to be part of this innovation legacy. 
+
+#NationalTechnologyDay #GIMT #Innovation #TechIndia #BharatTech #ProudStudent #CSE`;
   };
 
-  const shareOnSocial = (platform: 'linkedin' | 'facebook' | 'instagram') => {
-    const text = `I'm proud to be part of ${data.department} at GIMT! Celebrating National Technology Day 2026. 🚀 #NationalTechnologyDay #GIMT #Innovation #CSE`;
+  const copyCaption = () => {
+    navigator.clipboard.writeText(getCaption());
+    alert('Caption copied to clipboard! Share it with your pass on social media.');
+  };
+
+  const shareOnSocial = async (platform: 'linkedin' | 'facebook' | 'instagram' | 'whatsapp') => {
+    const text = getCaption();
     const url = window.location.href;
     
+    // Check for Web Share API (Mobile Support)
+    if (navigator.share && platform === 'whatsapp') {
+      try {
+        await navigator.share({
+          title: 'GIMT National Tech Day Pass',
+          text: text,
+          url: url,
+        });
+        return;
+      } catch (err) {
+        console.error('Share failed:', err);
+      }
+    }
+
     let shareUrl = '';
     switch(platform) {
       case 'linkedin':
@@ -84,13 +110,20 @@ export default function App() {
       case 'facebook':
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
         break;
-      case 'instagram':
-        shareUrl = `https://www.instagram.com/`;
-        alert('Download your pass first, then upload it to your Instagram story with #GIMT #TechDay2026');
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
         break;
+      case 'instagram':
+        alert('1. Download your pass\n2. Open Instagram\n3. Upload your pass to your Story or Feed\n4. Paste the caption (we copied it for you!)');
+        copyCaption();
+        return;
     }
     
-    if (shareUrl) window.open(shareUrl, '_blank');
+    if (shareUrl) {
+      window.open(shareUrl, '_blank');
+      // Also copy caption for them just in case
+      navigator.clipboard.writeText(text);
+    }
   };
 
   const capturePhoto = () => {
@@ -401,25 +434,26 @@ export default function App() {
                  <div className="flex-1 grid grid-cols-2 gap-4 w-full">
                     <button 
                       onClick={handleDownload}
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-cyan-500 text-black font-black uppercase tracking-widest rounded-xl hover:bg-cyan-400 transition-all active:scale-95 text-xs"
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-cyan-500 text-black font-black uppercase tracking-widest rounded-xl hover:bg-cyan-400 transition-all active:scale-95 text-xs shadow-[0_0_20px_rgba(6,182,212,0.3)]"
                     >
                       <Download className="w-4 h-4" />
                       Save Pass
                     </button>
                     <button 
-                      onClick={handlePrint}
-                      className="flex items-center justify-center gap-3 px-6 py-4 bg-transparent border-2 border-zinc-800 text-white font-black uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all active:scale-95 text-xs"
+                      onClick={copyCaption}
+                      className="flex items-center justify-center gap-3 px-6 py-4 bg-zinc-800 text-white font-black uppercase tracking-widest rounded-xl hover:bg-zinc-700 transition-all active:scale-95 text-xs border border-zinc-700"
                     >
-                      <Printer className="w-4 h-4" />
-                      Print
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
+                      Copy Caption
                     </button>
                  </div>
 
                  <div className="flex flex-col gap-3 w-full md:w-auto">
-                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest text-center md:text-left">Transmit to Neural Grid (Share)</span>
+                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest text-center md:text-left">Social Identity Upload</span>
                     <div className="flex items-center justify-center gap-4">
                        {[
                          { id: 'linkedin', icon: Linkedin, color: 'hover:text-blue-500' },
+                         { id: 'whatsapp', icon: Share2, color: 'hover:text-green-500' },
                          { id: 'facebook', icon: Facebook, color: 'hover:text-blue-600' },
                          { id: 'instagram', icon: Instagram, color: 'hover:text-pink-500' }
                        ].map((social) => (
@@ -427,6 +461,7 @@ export default function App() {
                             key={social.id}
                             onClick={() => shareOnSocial(social.id as any)}
                             className={`p-4 bg-zinc-900 border border-zinc-800 rounded-xl ${social.color} transition-all hover:border-zinc-700 active:scale-95`}
+                            title={`Share on ${social.id}`}
                          >
                             <social.icon className="w-6 h-6" />
                          </button>
