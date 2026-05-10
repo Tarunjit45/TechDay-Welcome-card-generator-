@@ -40,20 +40,20 @@ export default function WelcomeCard({ data, cardRef }: WelcomeCardProps) {
       >
         {/* Futuristic Background Layers */}
         <div 
-          className="absolute inset-0 opacity-15 pointer-events-none bg-cover bg-center grayscale"
+          className="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center"
           style={{ backgroundImage: 'url(/tech-bg.png)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-black/95 to-black/90 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/80 pointer-events-none" />
         
         {/* Glowing Accents */}
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-transparent to-cyan-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-transparent to-cyan-500/10 pointer-events-none" />
         <div 
-          className="absolute -bottom-20 -left-20 w-80 h-80 blur-[150px] rounded-full opacity-10" 
+          className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-5" 
           style={{ backgroundColor: theme.primary }}
         />
 
         {/* Top Header Section - Increased Height & Spacing */}
-        <div className="absolute top-0 left-0 right-0 h-28 flex items-center px-10 justify-between border-b border-white/10 bg-white/[0.05] backdrop-blur-md z-20">
+        <div className="absolute top-0 left-0 right-0 h-28 flex items-center px-10 justify-between border-b border-white/10 bg-zinc-900/90 z-20">
           <div className="flex items-center gap-5">
             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center p-2.5 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
